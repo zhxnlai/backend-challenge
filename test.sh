@@ -4,6 +4,8 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
+msr='./build/install/msr-shadow/bin/msr'
+
 function fail {
   echo -e "${RED}$1${NC}"
   exit 1
@@ -33,37 +35,31 @@ function blast {
   urls=$(cat blast.txt)
   count=$(echo $urls | wc -w)
   echo "Registering ${count} URLs"
-  for url in ${urls}; do
-    msr register ${url}
-  done
+  $msr register $urls
   echo "Racing..."
-  msr race
+  $msr race
 }
 
 echo "Installing module"
-pip install -e .
+./gradlew installShadowDist
 test_exit "install failed"
 
-echo "Checking msr exists"
-which msr
-test_exit "msr not found"
-
 echo "Testing subcommand version"
-msr version | test_output "[[:digit:]].[[:digit:]].[[:digit:]]" "is not a semver"
+$msr version | test_output "[[:digit:]].[[:digit:]].[[:digit:]]" "is not a semver"
 
 echo "Testing register: invalid URL"
-msr register "http:bad"
+$msr register "httpbad"
 test_panic "msr register did not fail"
 
 echo "Testing register: valid URL"
-msr register "http://google.com"
+$msr register "http://google.com"
 test_exit "msr register failed"
 
 echo "Testing measure"
-msr measure | test_output "google" "is missing an entry"
+$msr measure | test_output "google" "is missing an entry"
 
 echo "Running race"
-msr race
+$msr race
 
 echo "Blasting..."
 time blast
