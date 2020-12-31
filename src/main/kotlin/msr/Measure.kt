@@ -40,8 +40,7 @@ fun measure(
           httpClient.newCall(request).await()
         } catch (e: Throwable) {
           echo("Failed to load URL $url due to $e")
-          responseChannel.send(url to null)
-          return@launch
+          null
         }
         responseChannel.send(url to response)
       }
