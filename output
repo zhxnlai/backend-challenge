@@ -1,0 +1,73 @@
+~/Development/backend-challenge zl-201230 /bin/bash /Users/zhixuan/Development/backend-challenge/test.sh
+Installing module
+
+BUILD SUCCESSFUL in 1s
+4 actionable tasks: 4 up-to-date
+Yes!
+Testing subcommand version
+Yes!
+Testing register: invalid URL
+Exception in thread "main" java.lang.IllegalArgumentException: Malformed URL: httpbad
+        at msr.Register.validate(Cli.kt:43)
+        at msr.Register.run(Cli.kt:36)
+        at com.github.ajalt.clikt.parsers.Parser.parse(Parser.kt:180)
+        at com.github.ajalt.clikt.parsers.Parser.parse(Parser.kt:189)
+        at com.github.ajalt.clikt.parsers.Parser.parse(Parser.kt:17)
+        at com.github.ajalt.clikt.core.CliktCommand.parse(CliktCommand.kt:396)
+        at com.github.ajalt.clikt.core.CliktCommand.parse$default(CliktCommand.kt:393)
+        at com.github.ajalt.clikt.core.CliktCommand.main(CliktCommand.kt:411)
+        at com.github.ajalt.clikt.core.CliktCommand.main(CliktCommand.kt:436)
+        at msr.CliKt.main(Cli.kt:111)
+Yes!
+Testing register: valid URL
+Yes!
+Testing measure
+Yes!
+Running race
+╔════════════════╤════════════════════════════╗
+║ Domain         │ Average Load Time (Millis) ║
+╠════════════════╪════════════════════════════╣
+║ www.google.com │ 73.0                       ║
+╚════════════════╧════════════════════════════╝
+
+Blasting...
+Registering       94 URLs
+Racing...
+Failed to read body size of https://www.ebay.com/sch/ebayadvsearch due to java.io.IOException: gzip finished without exhausting source, using content length instead
+Failed to load URL http://www.espn.com/mlb/schedule due to java.net.ProtocolException: Too many follow-up requests: 21
+Failed to load URL http://www.espn.com/nfl/schedule due to java.net.ProtocolException: Too many follow-up requests: 21
+╔════════════════════════════╤════════════════════════════╗
+║ Domain                     │ Average Load Time (Millis) ║
+╠════════════════════════════╪════════════════════════════╣
+║ scores.espn.com            │ 33.25                      ║
+╟────────────────────────────┼────────────────────────────╢
+║ www.espn.com               │ 135.92857142857142         ║
+╟────────────────────────────┼────────────────────────────╢
+║ www.google.com             │ 103.0                      ║
+╟────────────────────────────┼────────────────────────────╢
+║ hoopshype.com              │ 255.5                      ║
+╟────────────────────────────┼────────────────────────────╢
+║ pages.ebay.com             │ 55.0                       ║
+╟────────────────────────────┼────────────────────────────╢
+║ www.cyft.com               │ 115.42105263157895         ║
+╟────────────────────────────┼────────────────────────────╢
+║ www.harvard.edu            │ 50.4375                    ║
+╟────────────────────────────┼────────────────────────────╢
+║ www.ebay.com               │ 213.0                      ║
+╟────────────────────────────┼────────────────────────────╢
+║ news.harvard.edu           │ 48.5                       ║
+╟────────────────────────────┼────────────────────────────╢
+║ help.etsy.com              │ 93.85                      ║
+╟────────────────────────────┼────────────────────────────╢
+║ signin.ebay.com            │ 218.83333333333334         ║
+╟────────────────────────────┼────────────────────────────╢
+║ archive.org                │ 238.0                      ║
+╟────────────────────────────┼────────────────────────────╢
+║ admissionscase.harvard.edu │ 223.0                      ║
+╚════════════════════════════╧════════════════════════════╝
+
+
+real    0m7.649s
+user    0m15.461s
+sys     0m1.507s
+~/Development/backend-challenge zl-201230 
