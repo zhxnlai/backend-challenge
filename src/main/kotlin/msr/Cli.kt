@@ -4,6 +4,9 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.arguments.multiple
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.required
+import com.github.ajalt.clikt.parameters.types.int
 import com.jakewharton.fliptables.FlipTable
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
@@ -97,6 +100,36 @@ class Race(
   }
 }
 
+class Crawl(
+  private val registry: Registry,
+  private val httpClient: OkHttpClient,
+) : CliktCommand() {
+  val depth by option(help="Depth of the search").int().required()
+
+  override fun run() {
+    val urls = registry.loadAllUrls()
+    val results = crawl(urls, httpClient, depth)
+    echo(results)
+//    printPageSizes(urls, measurements)
+    exitProcess(0)
+  }
+
+  private fun printPageSizes(urls: List<String>, measurements: Map<String, Measurement>) {
+    val tableHeaders = arrayOf("URL", "Size (Bytes)")
+    val tableRows = mutableListOf<Array<String>>()
+    for (url in urls) {
+      val measurement = measurements[url]
+      if (measurement == null) {
+        tableRows.add(arrayOf(url, "N/A"))
+        continue
+      }
+      tableRows.add(arrayOf(url, measurement.bodySizeBytes.toString()))
+    }
+    echo(FlipTable.of(tableHeaders, tableRows.toTypedArray()))
+  }
+}
+
+
 fun main(args: Array<String>) {
   val httpClient = OkHttpClient()
   val configPath = Paths.get("${System.getProperty("user.home")}/.msr/db")
@@ -106,7 +139,8 @@ fun main(args: Array<String>) {
       Version(),
       Register(registry),
       Measure(registry, httpClient),
-      Race(registry, httpClient)
+      Race(registry, httpClient),
+      Crawl(registry, httpClient),
     )
     .main(args)
 }

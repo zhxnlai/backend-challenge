@@ -29,6 +29,7 @@ dependencies {
     implementation "ru.gildor.coroutines:kotlin-coroutines-okhttp:1.0"
     implementation "com.jakewharton.fliptables:fliptables:1.1.0"
     implementation "com.squareup.moshi:moshi-kotlin:1.11.0"
+    implementation 'org.jsoup:jsoup:1.13.1'
 
     testImplementation 'junit:junit:4.12'
 }
