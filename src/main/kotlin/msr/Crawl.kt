@@ -23,12 +23,11 @@ fun crawl(
   }
 
   val eventLoop = Channel<Event>(UNLIMITED)
-  val expected = AtomicInteger()
-  val actual = AtomicInteger()
+  val pendingRequests = AtomicInteger()
   val results = ConcurrentHashMap<String, List<String>>()
 
   for (url in initialUrls) {
-    expected.incrementAndGet()
+    pendingRequests.incrementAndGet()
     eventLoop.send(SendRequest(url, maxDepth))
   }
 
@@ -54,7 +53,7 @@ fun crawl(
             if (results.contains(urlInPage) || remainingDepth < 1) {
               continue
             }
-            expected.incrementAndGet()
+            pendingRequests.incrementAndGet()
             eventLoop.send(SendRequest(urlInPage, remainingDepth - 1))
           }
           eventLoop.send(HandleResponse(url, urlsInPage))
@@ -63,8 +62,7 @@ fun crawl(
       is HandleResponse -> {
         val (url, urlsInPage) = event
         results[url] = urlsInPage
-        actual.incrementAndGet()
-        if (expected.get() == actual.get()) {
+        if (pendingRequests.decrementAndGet() == 0) {
           break
         }
       }
